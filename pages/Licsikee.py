@@ -2,15 +2,15 @@ import streamlit as st
 import functions
 import bg_func
 
-bg_func.set_background("images\\hunter.jpg", darkness=0.6)
+bg_func.set_background("images/hunter.jpg", darkness=0.6)
 
-missing_items = functions.get_todos("texts\\licsikee.txt")
-found_items = functions.get_todos("texts\\completed_licsikee.txt")
+missing_items = functions.get_todos("texts/licsikee.txt")
+found_items = functions.get_todos("texts/completed_licsikee.txt")
 
 def add_missing_item():
     local_missing_item = st.session_state["new_item"] + "\n"
     missing_items.append(local_missing_item)
-    functions.write_todos(missing_items,"texts\\licsikee.txt")
+    functions.write_todos(missing_items,"texts/licsikee.txt")
     st.session_state["new_item"] = ""
 
 def save_edit():
@@ -18,7 +18,7 @@ def save_edit():
         new_value = st.session_state["edit_input"]
         index = found_items.index(st.session_state["editing"])
         found_items[index] = new_value + "\n"
-        functions.write_todos(found_items, "texts\\completed_licsikee.txt")
+        functions.write_todos(found_items, "texts/completed_licsikee.txt")
         del st.session_state["editing"]
 
 
@@ -33,9 +33,9 @@ for index, missing_item in enumerate(missing_items):
     checkbox = st.checkbox(missing_item, key=missing_item)
     if checkbox:
         found_items.append(missing_item)
-        functions.write_todos(found_items,"texts\\completed_licsikee.txt")
+        functions.write_todos(found_items,"texts/completed_licsikee.txt")
         missing_items.pop(index)
-        functions.write_todos(missing_items,"texts\\licsikee.txt" )
+        functions.write_todos(missing_items,"texts/licsikee.txt" )
         del st.session_state[missing_item]
         st.rerun()
 
@@ -51,7 +51,7 @@ with col1:
 with col2:
     if st.button("Delete", disabled=selected_item is None):
         found_items.remove(selected_item)
-        functions.write_todos(found_items, "texts\\completed_licsikee.txt")
+        functions.write_todos(found_items, "texts/completed_licsikee.txt")
         st.rerun()
 
 if "editing" in st.session_state:
