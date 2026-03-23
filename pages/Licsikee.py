@@ -22,7 +22,7 @@ def save_edit():
         del st.session_state["editing"]
 
 
-st.title("Fonok Prot Paladin BIS Checklist (Midnight Season 1)")
+st.title("Folias The Hunter BIS Checklist (Midnight Season 1)")
 st.text_input(label ="Enter the item and the dungeon name here to upload your list!",
               placeholder="e.g. Ring 1 - WORK",
               on_change=add_missing_item,
