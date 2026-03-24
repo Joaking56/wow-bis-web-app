@@ -24,5 +24,8 @@ def set_background(image_file, darkness=0.5):
                 background-color: rgba(0, 0, 0, {darkness});
                 z-index: 0;
             }}
+            div[data-testid="InputInstructions"] {{
+                display: none;
+            }}
         </style>
     """, unsafe_allow_html=True)
