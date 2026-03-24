@@ -23,13 +23,14 @@ with col_input:
                   placeholder="e.g. Ring 1 - WORK",
                   key="new_item")
 with col_add:
-    st.markdown("<br>", unsafe_allow_html=True)  # ✅ igazítás
+    st.markdown("<div style='margin-top: 28px;'>", unsafe_allow_html=True)
     if st.button("Add"):
         if st.session_state["new_item"] != "":
             missing_items.append(st.session_state["new_item"] + "\n")
             functions.write_todos(missing_items, "texts/rudzi.txt")
             del st.session_state["new_item"]
             st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.write("Missing Items:")
 for index, missing_item in enumerate(missing_items):
