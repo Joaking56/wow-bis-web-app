@@ -30,13 +30,13 @@ st.text_input(label ="Enter the item and the dungeon name here to upload your li
 st.write("Missing Items:")
 
 for index, missing_item in enumerate(missing_items):
-    checkbox = st.checkbox(missing_item, key=missing_item)
+    checkbox = st.checkbox(missing_item, key=f"missing_{index}")
     if checkbox:
         found_items.append(missing_item)
-        functions.write_todos(found_items,"texts/completed_rudzi.txt")
+        functions.write_todos(found_items, "texts/completed_rudzi.txt")
         missing_items.pop(index)
-        functions.write_todos(missing_items,"texts/rudzi.txt" )
-        del st.session_state[missing_item]
+        functions.write_todos(missing_items, "texts/rudzi.txt")
+        del st.session_state[f"missing_{index}"]
         st.rerun()
 
 st.write("Equipped Items:")
