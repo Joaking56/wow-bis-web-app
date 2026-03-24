@@ -7,12 +7,6 @@ bg_func.set_background("images/demonhunter.jpg", darkness=0.6)
 missing_items = functions.get_todos("texts/rudzi.txt")
 found_items = functions.get_todos("texts/completed_rudzi.txt")
 
-def add_missing_item():
-    local_missing_item = st.session_state["new_item"] + "\n"
-    missing_items.append(local_missing_item)
-    functions.write_todos(missing_items,"texts/rudzi.txt")
-    st.session_state["new_item"] = ""
-
 def save_edit():
     if "editing" in st.session_state and "edit_input" in st.session_state:
         new_value = st.session_state["edit_input"]
@@ -21,14 +15,24 @@ def save_edit():
         functions.write_todos(found_items, "texts/completed_rudzi.txt")
         del st.session_state["editing"]
 
-
 st.title("Rudzi KPOP Demon Hunter BIS Checklist (Midnight Season 1)")
-st.text_input(label ="Enter the item and the dungeon name here to upload your list!",
-              placeholder="e.g. Ring 1 - WORK",
-              on_change=add_missing_item,
-              key="new_item")
-st.write("Missing Items:")
 
+# ✅ Gomb alapú hozzáadás on_change helyett
+col_input, col_add = st.columns([4, 1])
+with col_input:
+    st.text_input(label="Enter the item and the dungeon name here to upload your list!",
+                  placeholder="e.g. Ring 1 - WORK",
+                  key="new_item")
+with col_add:
+    st.write("")  # kis igazítás
+    if st.button("Add"):
+        if st.session_state["new_item"] != "":
+            missing_items.append(st.session_state["new_item"] + "\n")
+            functions.write_todos(missing_items, "texts/rudzi.txt")
+            st.session_state["new_item"] = ""
+            st.rerun()
+
+st.write("Missing Items:")
 for index, missing_item in enumerate(missing_items):
     checkbox = st.checkbox(missing_item, key=f"missing_{index}")
     if checkbox:
@@ -40,14 +44,12 @@ for index, missing_item in enumerate(missing_items):
         st.rerun()
 
 st.write("Equipped Items:")
-selected_item = st.radio(label="Item Select",options=found_items, index=None, label_visibility="hidden")
+selected_item = st.radio(label="Item Select", options=found_items, index=None, label_visibility="hidden")
 
 col1, col2 = st.columns(2)
-
 with col1:
     if st.button("Edit", disabled=selected_item is None):
         st.session_state["editing"] = selected_item
-
 with col2:
     if st.button("Delete", disabled=selected_item is None):
         found_items.remove(selected_item)
