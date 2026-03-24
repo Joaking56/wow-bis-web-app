@@ -17,19 +17,18 @@ def save_edit():
 
 st.title("Rudzi KPOP Demon Hunter BIS Checklist (Midnight Season 1)")
 
-# ✅ Gomb alapú hozzáadás on_change helyett
 col_input, col_add = st.columns([4, 1])
 with col_input:
     st.text_input(label="Enter the item and the dungeon name here to upload your list!",
                   placeholder="e.g. Ring 1 - WORK",
                   key="new_item")
 with col_add:
-    st.write("")  # kis igazítás
+    st.write("")
     if st.button("Add"):
         if st.session_state["new_item"] != "":
             missing_items.append(st.session_state["new_item"] + "\n")
             functions.write_todos(missing_items, "texts/rudzi.txt")
-            st.session_state["new_item"] = ""
+            del st.session_state["new_item"]  # ✅ javítva
             st.rerun()
 
 st.write("Missing Items:")
