@@ -1,18 +1,18 @@
 import streamlit as st
-import functions
+import github_functions
 import bg_func
 
 bg_func.set_background("images/prot.jpg", darkness=0.6)
 
-missing_items = functions.get_todos("texts/fonok_prot.txt")
-found_items = functions.get_todos("texts/completed_fonok_prot.txt")
+missing_items = github_functions.get_github_file("texts/fonok_prot.txt")
+found_items = github_functions.get_github_file("texts/completed_fonok_prot.txt")
 
 def save_edit():
     if "editing" in st.session_state and "edit_input" in st.session_state:
         new_value = st.session_state["edit_input"]
         index = found_items.index(st.session_state["editing"])
         found_items[index] = new_value + "\n"
-        functions.write_todos(found_items, "texts/completed_fonok_prot.txt")
+        github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         del st.session_state["editing"]
 
 st.title("Fonokvagyok Prot BIS Checklist (Midnight Season 1)")
@@ -27,7 +27,7 @@ with col_add:
     if st.button("Add"):
         if st.session_state["new_item"] != "":
             missing_items.append(st.session_state["new_item"] + "\n")
-            functions.write_todos(missing_items, "texts/fonok_prot.txt")
+            github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
             del st.session_state["new_item"]
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
@@ -37,9 +37,9 @@ for index, missing_item in enumerate(missing_items):
     checkbox = st.checkbox(missing_item, key=f"missing_{index}")
     if checkbox:
         found_items.append(missing_item)
-        functions.write_todos(found_items, "texts/completed_fonok_prot.txt")
+        github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         missing_items.pop(index)
-        functions.write_todos(missing_items, "texts/fonok_prot.txt")
+        github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
         del st.session_state[f"missing_{index}"]
         st.rerun()
 
@@ -53,7 +53,7 @@ with col1:
 with col2:
     if st.button("Delete", disabled=selected_item is None):
         found_items.remove(selected_item)
-        functions.write_todos(found_items, "texts/completed_fonok_prot.txt")
+        github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         st.rerun()
 
 if "editing" in st.session_state:
