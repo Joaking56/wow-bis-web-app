@@ -27,7 +27,7 @@ with col_add:
     if st.button("Add"):
         if st.session_state["new_item"] != "":
             missing_items.append(st.session_state["new_item"] + "\n")
-            functions.write_todos(missing_items, "fonok_prot.txt")
+            functions.write_todos(missing_items, "texts/fonok_prot.txt")
             del st.session_state["new_item"]
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
@@ -39,7 +39,7 @@ for index, missing_item in enumerate(missing_items):
         found_items.append(missing_item)
         functions.write_todos(found_items, "texts/completed_fonok_prot.txt")
         missing_items.pop(index)
-        functions.write_todos(missing_items, "fonok_prot.txt")
+        functions.write_todos(missing_items, "texts/fonok_prot.txt")
         del st.session_state[f"missing_{index}"]
         st.rerun()
 
