@@ -20,6 +20,11 @@ def save_edit():
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         del st.session_state["editing_fonok_prot"]
 
+def clear_checkboxes():
+    for i in range(len(missing_items) + 1):
+        if f"missing_fonok_prot_{i}" in st.session_state:
+            del st.session_state[f"missing_fonok_prot_{i}"]
+
 st.title("Fonokvagyok Prot BIS Checklist (Midnight Season 1)")
 
 col_input, col_add = st.columns([4, 1])
@@ -45,7 +50,7 @@ for index, missing_item in enumerate(missing_items):
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         missing_items.pop(index)
         github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-        del st.session_state[f"missing_fonok_prot_{index}"]
+        clear_checkboxes()
         st.rerun()
 
 st.write("Equipped Items:")
