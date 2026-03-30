@@ -43,8 +43,8 @@ with col_add:
         if st.session_state["new_item_fonok_prot"] != "":
             missing_items.append(st.session_state["new_item_fonok_prot"] + "\n")
             github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-            del st.session_state["missing_items_fonok_prot"]  # ✅ cache törlés
-            del st.session_state["new_item_fonok_prot"]  # ✅ input törlés
+            del st.session_state["missing_items_fonok_prot"]
+            st.session_state["new_item_fonok_prot"] = ""
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
