@@ -2,7 +2,7 @@ import streamlit as st
 import github_functions
 import bg_func
 
-bg_func.set_background("images/retri.jpg", darkness=0.6)
+bg_func.set_background("images/retri.jpeg", darkness=0.6)
 
 if "missing_items_fonok_retri" not in st.session_state:
     st.session_state["missing_items_fonok_retri"] = github_functions.get_github_file("texts/fonok_retri.txt")
