@@ -4,6 +4,7 @@ import bg_func
 
 bg_func.set_background("images/prot.jpg", darkness=0.6)
 
+# ✅ Csak egyszer tölti be a GitHub API-ból
 if "missing_items_fonok_prot" not in st.session_state:
     st.session_state["missing_items_fonok_prot"] = github_functions.get_github_file("texts/fonok_prot.txt")
 if "found_items_fonok_prot" not in st.session_state:
@@ -43,8 +44,8 @@ with col_add:
         if st.session_state["new_item_fonok_prot"] != "":
             missing_items.append(st.session_state["new_item_fonok_prot"] + "\n")
             github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-            del st.session_state["missing_items_fonok_prot"]
-            st.session_state["new_item_fonok_prot"] = ""
+            del st.session_state["missing_items_fonok_prot"]  # ✅ cache törlés
+            del st.session_state["new_item_fonok_prot"]  # ✅ input törlés
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -56,7 +57,7 @@ for index, missing_item in enumerate(missing_items):
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         missing_items.pop(index)
         github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-        clear_all()
+        clear_all()  # ✅ minden törlése
         st.rerun()
 
 st.write("Equipped Items:")
@@ -70,7 +71,7 @@ with col2:
     if st.button("Delete", disabled=selected_item is None, key="delete_btn_fonok_prot"):
         found_items.remove(selected_item)
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
-        del st.session_state["found_items_fonok_prot"]
+        del st.session_state["found_items_fonok_prot"]  # ✅ cache törlés
         st.rerun()
 
 if "editing_fonok_prot" in st.session_state:
