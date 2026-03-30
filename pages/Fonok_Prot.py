@@ -4,7 +4,6 @@ import bg_func
 
 bg_func.set_background("images/prot.jpg", darkness=0.6)
 
-# ✅ Csak egyszer tölti be a GitHub API-ból
 if "missing_items_fonok_prot" not in st.session_state:
     st.session_state["missing_items_fonok_prot"] = github_functions.get_github_file("texts/fonok_prot.txt")
 if "found_items_fonok_prot" not in st.session_state:
@@ -13,15 +12,6 @@ if "found_items_fonok_prot" not in st.session_state:
 missing_items = st.session_state["missing_items_fonok_prot"]
 found_items = st.session_state["found_items_fonok_prot"]
 
-def clear_all():
-    for i in range(len(missing_items) + 1):
-        if f"missing_fonok_prot_{i}" in st.session_state:
-            del st.session_state[f"missing_fonok_prot_{i}"]
-    if "missing_items_fonok_prot" in st.session_state:
-        del st.session_state["missing_items_fonok_prot"]
-    if "found_items_fonok_prot" in st.session_state:
-        del st.session_state["found_items_fonok_prot"]
-
 def save_edit():
     if "editing_fonok_prot" in st.session_state and "edit_input_fonok_prot" in st.session_state:
         new_value = st.session_state["edit_input_fonok_prot"]
@@ -29,7 +19,11 @@ def save_edit():
         found_items[index] = new_value + "\n"
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         del st.session_state["editing_fonok_prot"]
-        del st.session_state["found_items_fonok_prot"]
+
+def clear_checkboxes():
+    for i in range(len(missing_items) + 1):
+        if f"missing_fonok_prot_{i}" in st.session_state:
+            del st.session_state[f"missing_fonok_prot_{i}"]
 
 st.title("Fonokvagyok Prot BIS Checklist (Midnight Season 1)")
 
@@ -44,8 +38,7 @@ with col_add:
         if st.session_state["new_item_fonok_prot"] != "":
             missing_items.append(st.session_state["new_item_fonok_prot"] + "\n")
             github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-            del st.session_state["missing_items_fonok_prot"]  # ✅ cache törlés
-            del st.session_state["new_item_fonok_prot"]  # ✅ input törlés
+            del st.session_state["new_item_fonok_prot"]
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -57,7 +50,7 @@ for index, missing_item in enumerate(missing_items):
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
         missing_items.pop(index)
         github_functions.write_github_file("texts/fonok_prot.txt", missing_items)
-        clear_all()  # ✅ minden törlése
+        clear_checkboxes()
         st.rerun()
 
 st.write("Equipped Items:")
@@ -71,7 +64,6 @@ with col2:
     if st.button("Delete", disabled=selected_item is None, key="delete_btn_fonok_prot"):
         found_items.remove(selected_item)
         github_functions.write_github_file("texts/completed_fonok_prot.txt", found_items)
-        del st.session_state["found_items_fonok_prot"]  # ✅ cache törlés
         st.rerun()
 
 if "editing_fonok_prot" in st.session_state:
